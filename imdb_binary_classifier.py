@@ -25,7 +25,7 @@ x_train = np.zeros([len(train_data),10000])
 for number, sequence in enumerate(train_data):
     x_train[number, sequence] = 1
 
-#in the book it is done as a function...but like right now.....fuck it
+#in the book it is done as a function...but like right now.....ignore it
 x_test = np.zeros([len(test_data),10000])
 for number, sequence in enumerate(test_data):
     x_test[number, sequence] = 1
@@ -40,16 +40,17 @@ x_train_partial, validation_x_train = x_train[:15000], x_train[15000:]
 y_train_partial, validation_y_train = y_train[:15000], y_train[15000:]
 
 #model iterations
-activations = ['relu', 'tanh']
-loss_func = ['mse', 'binary_crossentropy']
+#activations = ['relu', 'tanh']
+activations = ['relu']
 
-hidden_layer_units = [16, 32, 64]
-#hidden_layer_units = [16]
+#loss_func = ['mse', 'binary_crossentropy']
+loss_func = ['mse']
 
-hidden_layers = [1,2,3]
-#hidden_layers = [1,2]
+#hidden_layer_units = [16, 32, 64]
+hidden_layer_units = [16]
 
-count = 1
+#hidden_layers = [1,2,3]
+hidden_layers = [1,2]
 
 for activation in activations:
     for function in loss_func:
@@ -106,4 +107,31 @@ for activation in activations:
 
                 output_dir = r'C:\Users\karan.verma\.spyder-py3\deep-learning-with-keras\imdb_model_images'
                 loss_fig.savefig('{}/ACTIVATION %s, LOSS FUNCTION %s, %d HIDDEN LAYERS & %d HIDDEN UNITS'.format(output_dir) % (activation, function, lyrs, units))
-                count += 1;
+
+                #show model evaluation
+                results = model.evaluate(x_test, y_test)
+                
+                #make prediction and pull out a value and re-map it and show probability
+                prediction = model.predict(x_test)
+                
+                word_index = imdb.get_word_index()
+                reverse_word_index_dict = {}
+                
+                for word, index in word_index.items():
+                    reverse_word_index_dict[index] = word
+                
+                #get random number from 25000 choices, reverse it from lookup and print it
+                #test_Data is equivalent to x_test wrt to example index
+                rand_choice = np.random.choice(25000)                
+                empty_string = ''
+                for index in test_data[rand_choice]:
+                    empty_string += reverse_word_index_dict.get(index-3, '?') + ' '
+                    
+                empty_string.strip()
+                print("Accuracy of this model is: {0:.2f}%".format(results[1]*100))
+                print('A random sample is as follows: %s' % empty_string)
+                print('Based on this model this sample is : {0:.2f}% positive'.format(prediction[rand_choice][0]*100))
+                
+                #save the model for later use
+                model.save('{}/Model %s %s %d %d'.format(output_dir) % (activation, function, lyrs, units))
+                
