@@ -42,15 +42,21 @@ y_train_partial, validation_y_train = y_train[:15000], y_train[15000:]
 #model iterations
 activations = ['relu', 'tanh']
 loss_func = ['mse', 'binary_crossentropy']
+
 hidden_layer_units = [16, 32, 64]
+#hidden_layer_units = [16]
+
 hidden_layers = [1,2,3]
+#hidden_layers = [1,2]
+
+count = 1
 
 for activation in activations:
     for function in loss_func:
         for units in hidden_layer_units:
             for lyrs in hidden_layers:
                 
-            
+                #print(activation, function, units, lyrs);
                 #write model
                 model = models.Sequential()
                 model.add(layers.Dense(16, activation = 'relu', input_shape = (10000,)))
@@ -78,25 +84,26 @@ for activation in activations:
                 training_loss_values = hist_dict['loss']
                 training_acc_values = hist_dict['acc']
                 
-                epochs = np.arange(1,11)
+                epochs = np.arange(1,10+1)
                 
+                loss_fig, ax = plt.subplots(2,1, figsize=(20,10))
+                plt.subplot(211)
                 plt.plot(epochs, validation_loss_values, 'b', label = 'Validation Loss')
                 plt.plot(epochs, training_loss_values, 'r', label='Training Loss')
                 plt.title('Loss with ACTIVATION %s, LOSS FUNCTION %s, %d HIDDEN LAYERS & %d HIDDEN UNITS' % (activation, function, lyrs, units))
                 plt.xlabel('Epochs')
                 plt.ylabel('Loss')
                 plt.legend()
-                plt.show()                
-                plt.clf()
                 
+                plt.subplot(212)
                 plt.plot(epochs, validation_acc_values, 'b', label = 'Validation Accuracy')
                 plt.plot(epochs, training_acc_values, 'r', label='Training Accuracy')
                 plt.title('Accuracy with ACTIVATION %s, LOSS FUNCTION %s, %d HIDDEN LAYERS & %d HIDDEN UNITS' % (activation, function, lyrs, units))
                 plt.xlabel('Epochs')
                 plt.ylabel('Accuracy')
                 plt.legend()
-                plt.show()                
-                plt.clf()
+                plt.tight_layout()
 
-
-    
+                output_dir = r'C:\Users\karan.verma\.spyder-py3\deep-learning-with-keras\imdb_model_images'
+                loss_fig.savefig('{}/ACTIVATION %s, LOSS FUNCTION %s, %d HIDDEN LAYERS & %d HIDDEN UNITS'.format(output_dir) % (activation, function, lyrs, units))
+                count += 1;
