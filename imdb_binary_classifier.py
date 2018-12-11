@@ -25,7 +25,7 @@ x_train = np.zeros([len(train_data),10000])
 for number, sequence in enumerate(train_data):
     x_train[number, sequence] = 1
 
-#in the book it is done as a function...but like right now.....fuck it
+#in the book it is done as a function...but like right now.....ignore it
 x_test = np.zeros([len(test_data),10000])
 for number, sequence in enumerate(test_data):
     x_test[number, sequence] = 1
