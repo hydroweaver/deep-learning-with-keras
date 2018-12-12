@@ -107,6 +107,7 @@ for activation in activations:
 
                 output_dir = r'C:\Users\karan.verma\.spyder-py3\deep-learning-with-keras\imdb_model_images'
                 loss_fig.savefig('{}/ACTIVATION %s, LOSS FUNCTION %s, %d HIDDEN LAYERS & %d HIDDEN UNITS'.format(output_dir) % (activation, function, lyrs, units))
+<<<<<<< HEAD
 
                 #show model evaluation
                 results = model.evaluate(x_test, y_test)
@@ -135,3 +136,6 @@ for activation in activations:
                 #save the model for later use
                 model.save('{}/Model %s %s %d %d'.format(output_dir) % (activation, function, lyrs, units))
                 
+=======
+                count += 1;
+>>>>>>> 2d03dd5f3d844ded90271500fa2b274e947d75b7
